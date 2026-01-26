@@ -1,0 +1,48 @@
+@extends('dashboard.layouts.index')
+
+@section('content')
+<div class="page-inner">
+    <div class="card">
+        <div class="card-header d-flex align-items-center justify-content-between">
+            <div>
+                <h4 class="card-title mb-0">Edit Environment</h4>
+                <small class="text-muted">Form untuk mengubah data environment</small>
+            </div>
+            <a href="{{ route('environment.index') }}" class="btn btn-success btn-sm">Kembali</a>
+        </div>
+
+        <div class="card-body">
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if(session('success'))
+                <div class="alert alert-success" role="alert">
+                    <b>Success!</b>
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <form action="{{ route('environment.update', $environment->id) }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+                <div class="mb-3">
+                    <label class="form-label">Safety Items</label>
+                    <textarea name="safety_items" class="form-control" rows="3">{{ old('safety_items', $environment->safety_items) }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Standard Items</label>
+                    <textarea name="standard_items" class="form-control" rows="3">{{ old('standard_items', $environment->standard_items) }}</textarea>
+                </div>
+                <button class="btn btn-success">Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+</div>
+@endsection
