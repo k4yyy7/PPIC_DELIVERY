@@ -94,11 +94,23 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
+                 <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Driver</h4>
+                </li>
                 <li class="nav-item {{ $isActiveDriver ? 'active' : '' }}">
                     <a href="{{ route('user.driver.active') }}">
                         <i class="fas fa-id-badge"></i>
                         <p>Driver Aktif Hari Ini</p>
                     </a>
+                </li>
+                 <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Component</h4>
                 </li>
                 <li class="nav-item {{ $isDailyDriver ? 'active' : '' }}">
                     <a href="{{ route('user.daily.driver') }}">
@@ -129,6 +141,12 @@
                         <i class="fas fa-shield-alt"></i>
                         <p>Safety Warning</p>
                     </a>
+                </li>
+                 <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Report Harian</h4>
                 </li>
                 <li class="nav-item {{ $isHistory ? 'active' : '' }}">
                     <a href="{{ route('user.daily.history') }}">

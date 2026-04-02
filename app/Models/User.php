@@ -24,6 +24,7 @@ class User extends Authenticatable
         'plat_nomor',
         'password',
         'last_login_at',
+        'role',
     ];
 
     /**

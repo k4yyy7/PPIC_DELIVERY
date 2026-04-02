@@ -23,6 +23,23 @@ class DailyReport extends Model
         'date' => 'date',
     ];
 
+    /**
+     * Relasi ke item yang diisi pada report ini (polymorphic ke subject)
+     */
+    public function itemObject()
+    {
+        // Mengembalikan instance item terkait (DriverItem, ArmadaItem, Dokument, Environment, Safety)
+        return $this->morphTo(__FUNCTION__, 'subject_type', 'subject_id');
+    }
+
+    /**
+     * Helper: return 1 untuk setiap report (karena 1 report = 1 item)
+     */
+    public function getItemCountAttribute()
+    {
+        return 1;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

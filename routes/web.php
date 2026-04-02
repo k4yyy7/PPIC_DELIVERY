@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LandingController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -15,13 +16,16 @@ use App\Http\Controllers\Admin\SafetyController;
 use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\User\DashboardController as UserDashboardController;
 use App\Http\Controllers\User\DailyReportController;
+use Illuminate\Http\Request;
 
 
-Route::get('/', function () {
-    return redirect()->route('login');
-});
+// Landing page utama (bisa diakses siapa saja)
+Route::get('/', [LandingController::class, 'index']);
 
 Auth::routes();
+
+Route::get('/live-data', [LandingController::class, 'liveData'])->name('landing.live');
+
 
 Route::get('/search', [SearchController::class, 'index'])->name('search');
 
@@ -70,6 +74,12 @@ Route::prefix('admin')->middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/reports/monthly', [DashboardController::class, 'monthlyReports'])->name('admin.reports.monthly');
     Route::get('/reports/chart', [DashboardController::class, 'dailyReportsChart'])->name('admin.reports.chart');
     Route::get('/reports/summary-chart', [DashboardController::class, 'summaryChart'])->name('admin.reports.summary-chart');
+
+    // Delete monthly report
+    Route::delete('/reports/monthly/{id}', [DashboardController::class, 'destroyMonthlyReport'])->name('admin.reports.destroy');
+    
+    // API endpoint for real-time driver feed
+    Route::get('/driver-feed', [DashboardController::class, 'getDriverFeed'])->name('admin.driver-feed');
 });
 
 // User routes

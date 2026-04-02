@@ -21,10 +21,51 @@ class UserHistoryReportExport implements FromCollection, WithHeadings, WithStyle
     public function collection()
     {
         return $this->reports->map(function ($report) {
+            // Map subject_type to readable type
+            $typeMap = [
+                \App\Models\DriverItem::class => 'Driver',
+                \App\Models\ArmadaItem::class => 'Armada',
+                \App\Models\Car::class => 'Mobil',
+                \App\Models\Driver::class => 'Driver',
+                \App\Models\DailyReport::class => 'Laporan Harian',
+                \App\Models\Safety::class => 'Safety Warning',
+                \App\Models\User::class => 'User',
+                \App\Models\Environment::class => 'Environment',
+                \App\Models\Dokument::class => 'Document',
+                \App\Exports\AdminMonthlyReportExport::class => 'Admin Report',
+                \App\Exports\UserHistoryReportExport::class => 'User Report',
+                // Tambahkan mapping lain jika ada
+            ];
+            if (isset($typeMap[$report->subject_type])) {
+                $type = $typeMap[$report->subject_type];
+            } elseif (
+                isset($report->subject) && (
+                    $report->subject instanceof \App\Models\Safety ||
+                    (is_string($report->subject_type) && preg_match('/Safety/i', $report->subject_type))
+                )
+            ) {
+                $type = 'Safety Warning';
+            } elseif (
+                isset($report->subject) && (
+                    $report->subject instanceof \App\Models\Environment ||
+                    (is_string($report->subject_type) && preg_match('/Environment/i', $report->subject_type))
+                )
+            ) {
+                $type = 'Environment';
+            } elseif (
+                isset($report->subject) && (
+                    $report->subject instanceof \App\Models\Dokument ||
+                    (is_string($report->subject_type) && preg_match('/Dokument/i', $report->subject_type))
+                )
+            ) {
+                $type = 'Document';
+            } else {
+                $type = $report->subject_type ?? 'Unknown';
+            }
             return [
                 'date' => \Carbon\Carbon::parse($report->date)->format('d M Y'),
                 'driver_name' => $report->driver_name ?? '-',
-                'type' => $report->subject_type === \App\Models\DriverItem::class ? 'Driver' : 'Armada',
+                'type' => $type,
                 'safety_items' => $report->subject ? $report->subject->safety_items : '-',
                 'standard_items' => $report->subject ? $report->subject->standard_items : '-',
                 'status' => $report->status,
@@ -50,6 +91,7 @@ class UserHistoryReportExport implements FromCollection, WithHeadings, WithStyle
 
     public function styles(Worksheet $sheet)
     {
+        // Hanya style header saja, baris lain default
         return [
             1 => [
                 'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],

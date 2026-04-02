@@ -23,12 +23,44 @@ class AdminMonthlyReportExport implements FromCollection, WithHeadings, WithStyl
     public function collection()
     {
         return $this->reports->map(function ($report) {
+            // Map subject_type to readable type
+            $typeMap = [
+                \App\Models\DriverItem::class => 'Driver',
+                \App\Models\ArmadaItem::class => 'Armada',
+                \App\Models\Dokument::class => 'Document',
+                \App\Models\Environment::class => 'Environment',
+                \App\Models\Safety::class => 'Safety Warning',
+            ];
+            if (isset($typeMap[$report->subject_type])) {
+                $type = $typeMap[$report->subject_type];
+            } elseif (isset($report->subject) && (
+                $report->subject instanceof \App\Models\Safety ||
+                (is_string($report->subject_type) && preg_match('/Safety/i', $report->subject_type))
+            )) {
+                $type = 'Safety Warning';
+            } elseif (isset($report->subject) && (
+                $report->subject instanceof \App\Models\Environment ||
+                (is_string($report->subject_type) && preg_match('/Environment/i', $report->subject_type))
+            )) {
+                $type = 'Environment';
+            } elseif (isset($report->subject) && (
+                $report->subject instanceof \App\Models\Dokument ||
+                (is_string($report->subject_type) && preg_match('/Dokument/i', $report->subject_type))
+            )) {
+                $type = 'Document';
+            } elseif ($report->subject_type === \App\Models\ArmadaItem::class) {
+                $type = 'Armada';
+            } elseif ($report->subject_type === \App\Models\DriverItem::class) {
+                $type = 'Driver';
+            } else {
+                $type = $report->subject_type ?? 'Unknown';
+            }
             return [
                 'date' => \Carbon\Carbon::parse($report->date)->format('d M Y'),
                 'user_name' => $report->user->name ?? '-',
                 'user_plat' => $report->user && $report->user->plat_nomor ? $report->user->plat_nomor : '-',
                 'driver_name' => $report->driver_name ?? '-',
-                'type' => $report->subject_type === \App\Models\DriverItem::class ? 'Driver' : 'Armada',
+                'type' => $type,
                 'safety_items' => $report->subject ? $report->subject->safety_items : '-',
                 'standard_items' => $report->subject ? $report->subject->standard_items : '-',
                 'status' => $report->status,
@@ -56,6 +88,7 @@ class AdminMonthlyReportExport implements FromCollection, WithHeadings, WithStyl
 
     public function styles(Worksheet $sheet)
     {
+        // Hanya style header saja, baris lain default
         return [
             1 => [
                 'font' => ['bold' => true, 'color' => ['rgb' => 'FFFFFF']],
@@ -88,3 +121,4 @@ class AdminMonthlyReportExport implements FromCollection, WithHeadings, WithStyl
         return $drawings;
     }
 }
+    

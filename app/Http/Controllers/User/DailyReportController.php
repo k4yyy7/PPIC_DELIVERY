@@ -27,7 +27,7 @@ class DailyReportController extends Controller
         $driverItems = DriverItem::orderBy('id')->get();
         $armadaItems = ArmadaItem::orderBy('id')->get();
 
-        // Laporan milik user yang digunakan untuk mengisi otomatis form
+        // Laporan milik user yang digunakan untuk mengisi otomatis form ketika user memilih tanggal tertentu
         $reports = DailyReport::where('user_id', Auth::id())
             ->whereDate('date', $date)
             ->get()
@@ -207,9 +207,12 @@ class DailyReportController extends Controller
             'date' => 'nullable|date',
             'items' => 'required|array',
             'items.*.subject_id' => 'required|integer',
-            'items.*.status' => 'required|in:OK,NG,UNKNOWN',
+            // Hanya OK dan NG yang diterima
+            'items.*.status' => 'required|in:OK,NG',
             'items.*.notes' => 'nullable|string',
             'items.*.image' => 'nullable|image|max:8192',
+        ], [
+            'items.*.status.in' => 'Status item ke-:position harus diisi (OK atau NG)!',
         ]);
 
         $date = $validated['date'] ?? now()->toDateString();

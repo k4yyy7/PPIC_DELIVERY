@@ -34,6 +34,125 @@
                     <input type="text" placeholder="Search ..." class="form-control" />
                 </div> --}}
             </nav>
+<div class="safety-banner d-none d-lg-flex align-items-center me-3">
+    <div class="banner-label">
+        <i class="fas fa-shield-alt me-2"></i>
+        <span>UPDATE</span>
+    </div>
+    <div class="safety-banner-track">
+        <div class="safety-banner-content">
+            <span class="banner-item"><i class="fas fa-check-circle text-warning me-2"></i>Prioritaskan Keselamatan Kerja (K3)</span>
+            <span class="safety-divider">/</span>
+            <span class="banner-item"><i class="fas fa-leaf text-light me-2"></i>Jaga Kelestarian Lingkungan Area Kerja</span>
+            <span class="safety-divider">/</span>
+            <span class="banner-item"><i class="fas fa-pills text-warning me-2"></i>Zero Accident, Zero Compromise</span>
+            <span class="safety-divider">/</span>
+            <span class="banner-item"><i class="fas fa-info-circle text-light me-2"></i>Pastikan Laporan Harian Terisi Tepat Waktu</span>
+            <span class="safety-divider">/</span>
+
+            <span class="banner-item"><i class="fas fa-check-circle text-warning me-2"></i>Prioritaskan Keselamatan Kerja (K3)</span>
+            <span class="safety-divider">/</span>
+            <span class="banner-item"><i class="fas fa-leaf text-light me-2"></i>Jaga Kelestarian Lingkungan Area Kerja</span>
+            <span class="safety-divider">/</span>
+            <span class="banner-item"><i class="fas fa-pills text-warning me-2"></i>Zero Accident, Zero Compromise</span>
+            <span class="safety-divider">/</span>
+            <span class="banner-item"><i class="fas fa-info-circle text-light me-2"></i>Pastikan Laporan Harian Terisi Tepat Waktu</span>
+            <span class="safety-divider">/</span>
+        </div>
+    </div>
+</div>
+
+<style>
+    :root {
+        --pt-green-dark: #064e3b; /* Hijau Emerald Tua */
+        --pt-green-base: #059669; /* Hijau Utama */
+        --pt-green-light: #10b981; /* Hijau Muda */
+    }
+
+    .safety-banner {
+        flex: 1;
+        max-width: 500px;
+        height: 38px;
+        overflow: hidden;
+        background: var(--pt-green-dark);
+        background: linear-gradient(90deg, var(--pt-green-dark) 0%, var(--pt-green-base) 100%);
+        border-radius: 50px; /* Modern pill shape */
+        padding: 0;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 15px rgba(0, 78, 59, 0.2);
+        position: relative;
+    }
+
+    /* Label "UPDATE" tetap di kiri (Static) */
+    .banner-label {
+        background: rgba(255, 255, 255, 0.15);
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0 15px;
+        color: #fff;
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 1px;
+        z-index: 5;
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(5px);
+    }
+
+    .safety-banner-track {
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+        width: 100%;
+    }
+
+    .safety-banner-content {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        animation: safetyScroll 25s linear infinite; /* Kecepatan lebih elegan */
+    }
+
+    .safety-banner:hover .safety-banner-content {
+        animation-play-state: paused; /* Berhenti saat di-hover agar mudah dibaca */
+    }
+
+    .banner-item {
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        font-weight: 500;
+        font-size: 0.85rem;
+        color: #f0fdf4;
+        letter-spacing: 0.3px;
+        display: flex;
+        align-items: center;
+    }
+
+    .safety-divider {
+        margin: 0 25px;
+        color: rgba(255, 255, 255, 0.3);
+        font-weight: 300;
+        font-size: 1.2rem;
+    }
+
+    @keyframes safetyScroll {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(-50%); } /* Geser setengah karena teks diduplikasi */
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1199px) {
+        .safety-banner {
+            max-width: 350px;
+        }
+        .banner-label {
+            padding: 0 10px;
+            font-size: 0.65rem;
+        }
+        .banner-item {
+            font-size: 0.75rem;
+        }
+    }
+</style>
 
             <ul class="navbar-nav topbar-nav ms-md-auto align-items-center">
                 <li class="nav-item topbar-icon dropdown hidden-caret d-flex d-lg-none" style="display: none !important;">

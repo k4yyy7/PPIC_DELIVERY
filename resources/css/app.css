@@ -1,3 +1,5 @@
+/* Kosongkan file jika tidak ingin error, atau biarkan import Tailwind jika memang digunakan. */
+
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
